@@ -19,7 +19,7 @@ const initialState: DepartmentState = {
 
 export const addDepartment = createAsyncThunk<
   any,
-  { name: string },
+  { name: string; description: string },
   { rejectValue: string }
 >(
   "department/add",

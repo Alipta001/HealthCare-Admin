@@ -1,12 +1,15 @@
 import axios from "axios";
 import { Cookies } from "react-cookie";
+export const BaseURL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
 
-export const BASE_URL = "http://localhost:4000";
+
+console.log("BaseURL:", BaseURL);
 export const AxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BaseURL,
   headers: {
-    "content-type": "application/json",
+    "Content-Type": "application/json",
   },
+  withCredentials: true,   // ✅ REQUIRED
 });
 
 AxiosInstance.interceptors.request.use(
@@ -16,11 +19,12 @@ AxiosInstance.interceptors.request.use(
 
     if (token) {
       config.headers = config.headers || {};
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers["x-access-token"] = token; 
     }
+
     return config;
   },
   function (error) {
     return Promise.reject(error);
-  },
+  }
 );

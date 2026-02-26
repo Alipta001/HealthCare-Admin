@@ -1,5 +1,7 @@
 // "use client";
 
+import DoctorModalForm from "./doctorModalForm";
+
 // export default function AddDoctorModal({ open, onClose }) {
 //   if (!open) return null;
 
@@ -173,15 +175,72 @@
 //   );
 // }
 
-"use client";
+
+
+// "use client";
+
+// type AddDoctorModalLayoutProps = {
+//   open: boolean;
+//   onClose: (value: boolean) => boolean;
+//   title: string;
+//   description?: string;
+// };
+
+
+// export default function AddDoctorModalLayout({
+//   open,
+//   onClose,
+//   title,
+//   description,
+// }: AddDoctorModalLayoutProps) {
+//   if (!open) return null;
+
+//   return (
+//     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-6">
+//       <div
+//         className={`relative w-full max-w-2xl 
+//         bg-white rounded-3xl 
+//         shadow-[0_40px_80px_rgba(0,0,0,0.35)]
+//         p-10 overflow-y-auto max-h-[90vh]`}
+//       >
+//         {/* Close Button */}
+//         <button
+//           type="button"
+//           onClick={onClose}
+//           className="absolute top-6 right-6 w-9 h-9 rounded-full 
+//           bg-slate-100 hover:bg-red-500 hover:text-white 
+//           flex items-center justify-center text-slate-500 transition"
+//         >
+//           ✕
+//         </button>
+
+//         {/* Header */}
+//         {(title || description) && (
+//           <div className="mb-10">
+//             {title && (
+//               <h2 className="text-3xl font-bold text-slate-800">{title}</h2>
+//             )}
+//             {description && (
+//               <p className="text-slate-500 mt-2 text-sm">{description}</p>
+//             )}
+//             <div className="mt-4 w-16 h-1 bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full" />
+//           </div>
+//         )}
+
+//         {/* Directly render DoctorForm */}
+//         <DoctorModalForm onCancel={onClose} />
+//       </div>
+//     </div>
+//   );
+// }
+
 
 type AddDoctorModalLayoutProps = {
   open: boolean;
-  onClose: (value: boolean) => void;
+  onClose: () => void;
   title: string;
   description?: string;
 };
-
 
 export default function AddDoctorModalLayout({
   open,
@@ -192,29 +251,23 @@ export default function AddDoctorModalLayout({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-6">
-      <div
-        className={`relative w-full max-w-2xl 
-        bg-white rounded-3xl 
-        shadow-[0_40px_80px_rgba(0,0,0,0.35)]
-        p-10 overflow-y-auto max-h-[90vh]`}
-      >
-        {/* Close Button */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 sm:p-6">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-[0_40px_80px_rgba(0,0,0,0.35)] p-6 sm:p-10 overflow-y-auto max-h-[90vh]">
+        
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-6 right-6 w-9 h-9 rounded-full 
-          bg-slate-100 hover:bg-red-500 hover:text-white 
-          flex items-center justify-center text-slate-500 transition"
+          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-red-500 hover:text-white flex items-center justify-center text-slate-500 transition"
         >
           ✕
         </button>
 
-        {/* Header */}
         {(title || description) && (
-          <div className="mb-10">
+          <div className="mb-8">
             {title && (
-              <h2 className="text-3xl font-bold text-slate-800">{title}</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-800">
+                {title}
+              </h2>
             )}
             {description && (
               <p className="text-slate-500 mt-2 text-sm">{description}</p>
@@ -223,7 +276,6 @@ export default function AddDoctorModalLayout({
           </div>
         )}
 
-        {/* Directly render DoctorForm */}
         <DoctorModalForm onCancel={onClose} />
       </div>
     </div>
