@@ -72,7 +72,7 @@
 import { AxiosInstance } from "@/api/axios/axios";
 import { endPoints } from "@/api/endPoints/endPoints";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Cookies } from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
 
 interface User {
   id: string;
@@ -99,6 +99,7 @@ const initialState: AuthState = {
   error: null,
 };
 
+
 export const authLogin = createAsyncThunk<
   any,
   { email: string; password: string },
@@ -112,6 +113,10 @@ export const authLogin = createAsyncThunk<
         payload
       );
       console.log(response)
+    const cookies = new Cookies();
+      const token = response.data.token;
+
+      cookies.set("token", token || "", { path: "/" });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
@@ -149,11 +154,6 @@ export const authSlice = createSlice({
         state.isAuthenticated = true;
         state.error = null;
         state.token = action.payload.token || state.token;
-        // persist token in cookie for subsequent requests
-        const cookie = new Cookies();
-        if (state.token) {
-          cookie.set("token", state.token, { path: "/" });
-        }
       })
 
       .addCase(authLogin.rejected, (state, action) => {

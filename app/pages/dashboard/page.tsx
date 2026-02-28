@@ -1,10 +1,9 @@
-import AdminDashboard from '@/components/adminDashboard/adminDashboard'
-import React from 'react'
+import AdminDashboard from "@/components/adminDashboard/adminDashboard";
 
 export default function Page() {
   return (
     <>
-    <AdminDashboard></AdminDashboard>
+      <AdminDashboard></AdminDashboard>
     </>
-  )
+  );
 }

@@ -64,15 +64,33 @@
 //   );
 // }
 
+"use client"
+import { useDispatch, useSelector } from "react-redux";
 import DoctorRow from "./doctorRow";
+import { useEffect } from "react";
+import { doctorList } from "@/redux/slice/doctorSlice";
+import { departmentList } from "@/redux/slice/departmentSlice";
 
 export default function DoctorTable() {
-  const doctors = [
+
+  const dispatch = useDispatch();
+  const{
+    data:doctors,
+    loading, 
+    error
+  } = useSelector((state) => state.doctor)
+
+useEffect(()=>{
+  dispatch(doctorList())
+},[])
+
+
+  /* const doctors = [
     { id: 1, name: "Dr. Smith", department: "Cardiology", appointmentStatus: "Pending" },
     { id: 2, name: "Dr. John", department: "Neurology", appointmentStatus: "Accepted" },
     { id: 3, name: "Dr. Alice", department: "Orthopedic", appointmentStatus: "Cancelled" },
   ];
-
+ */
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left min-w-[600px] bg-white/80 backdrop-blur-xl rounded-[2.5rem] border border-white/50 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]">
@@ -80,13 +98,13 @@ export default function DoctorTable() {
           <tr>
             <th className="p-6 text-xs uppercase tracking-[0.25em] text-slate-400 font-black">Practitioner</th>
             <th className="p-6 text-xs uppercase tracking-[0.25em] text-slate-400 font-black">Department</th>
-            <th className="p-6 text-xs text-center uppercase tracking-[0.25em] text-slate-400 font-black">Status</th>
+            <th className="p-6 text-xs text-center uppercase tracking-[0.25em] text-slate-400 font-black">Specialization</th>
             <th className="p-6 text-xs text-center uppercase tracking-[0.25em] text-slate-400 font-black">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
           {doctors.map((doc) => (
-            <DoctorRow key={doc.id} doctor={doc} />
+            <DoctorRow key={doc._id} doctor={doc} />
           ))}
         </tbody>
       </table>

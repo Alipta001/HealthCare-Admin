@@ -46,9 +46,31 @@
 // }
 
 
+"use client"
+import { departmentList } from "@/redux/slice/departmentSlice";
 import AppointmentActions from "./appointmentActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function DoctorRow({ doctor }) {
+  
+const dispatch = useDispatch();
+  const{
+    data:department,
+    loading, 
+    error
+  } = useSelector((state) => state.department)
+useEffect(()=>{
+  dispatch(departmentList())
+},[])
+
+  /* const departmentName = department.find((dept)=>{
+ return dept.id === doctor. departmentId? dept.name : null
+}) */
+
+ const departmentName = department.find(
+  (dept) => dept._id === doctor.departmentId
+)?.name || "Unknown";
   const statusStyle =
     doctor.appointmentStatus === "Accepted"
       ? "bg-emerald-50 text-emerald-600 border-emerald-200"
@@ -65,7 +87,7 @@ export default function DoctorRow({ doctor }) {
           
           <div className="relative">
             <img
-              src={`https://i.pravatar.cc/150?u=${doctor.id}`}
+              src="/images/login/profile-icon.png"
               alt={doctor.name}
               className="w-14 h-14 rounded-2xl object-cover shadow-md border-2 border-white group-hover:scale-105 transition"
             />
@@ -84,7 +106,7 @@ export default function DoctorRow({ doctor }) {
 
       {/* Department */}
       <td className="p-6 text-sm font-semibold text-slate-500 uppercase tracking-wider">
-        {doctor.department}
+        {departmentName}
       </td>
 
       {/* Status */}
@@ -92,7 +114,7 @@ export default function DoctorRow({ doctor }) {
         <span
           className={`px-5 py-2 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] border ${statusStyle}`}
         >
-          {doctor.appointmentStatus}
+          {doctor.specialization}
         </span>
       </td>
 

@@ -93,18 +93,18 @@ export default function Header({ onOpenDoctorModal, onOpenDepartmentModal }) {
 
         {/* Buttons container */}
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-5 w-full sm:w-auto mt-3 sm:mt-0">
-          <button
-            onClick={onOpenDepartmentModal}
+          {/* <button
+            onClick={onOpenDoctorModal}
             className="w-full sm:w-auto px-3 sm:px-5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm sm:text-base font-medium hover:bg-white/10 transition-all whitespace-nowrap"
           >
             + Department
-          </button>
+          </button> */}
 
           <button
-            onClick={onOpenDoctorModal}
-            className="w-full sm:w-auto px-4 sm:px-6 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white text-sm sm:text-base font-semibold shadow-lg shadow-indigo-900/30 hover:scale-[1.03] hover:shadow-xl active:scale-[0.97] transition-all duration-200 whitespace-nowrap"
+            onClick={onOpenDepartmentModal}
+            className="w-full sm:w-auto px-4 sm:px-6 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white text-sm sm:text-base font-semibold shadow-lg shadow-indigo-900/30 hover:scale-[1.03] hover:shadow-xl active:scale-[0.97] transition-all duration-200 whitespace-nowrap cursor-pointer"
           >
-            + Doctor
+            + Department
           </button>
         </div>
 

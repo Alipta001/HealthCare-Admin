@@ -246,6 +246,8 @@ export default function AddDoctorModalLayout({
   open,
   onClose,
   title,
+  departmentId,
+  departmentName,
   description,
 }: AddDoctorModalLayoutProps) {
   if (!open) return null;
@@ -276,7 +278,7 @@ export default function AddDoctorModalLayout({
           </div>
         )}
 
-        <DoctorModalForm onCancel={onClose} />
+        <DoctorModalForm title={title} departmentId={departmentId} departmentName={departmentName} onCancel={onClose}/>
       </div>
     </div>
   );

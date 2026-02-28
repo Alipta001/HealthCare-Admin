@@ -9,6 +9,7 @@ export const endPoints = {
     update: "/admin/doctor/update",
     details: "/admin/doctor/details/:id",
     department: "/admin/doctor/department",
+    departmentList: "/admin/departments/list",
     delete: "/admin/doctor/delete",
     appointment: {
       list: "/admin/doctor/appointment",

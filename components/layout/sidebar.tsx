@@ -73,27 +73,39 @@
 //     </div>
 //   );
 // }
-
 "use client";
 
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { logout } from "@/redux/slice/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function Sidebar() {
-  const [active, setActive] = useState("Overview");
+  const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
 
   const menu = [
-    "Overview",
-    "Departments",
-    "Doctors",
-    "Appointments",
-    "Schedules",
-    "Settings",
+    { name: "Overview", path: "/pages/dashboard" },
+    { name: "Departments", path: "/pages/department" },
+    { name: "Doctors", path: "/admin/doctors" },
+    { name: "Appointments", path: "/admin/appointments" },
+    { name: "Schedules", path: "/admin/schedules" },
+    { name: "Settings", path: "/admin/settings" },
   ];
+
+ const handleLogout = () => {
+    dispatch(logout()); 
+    router.push("/auth/signin"); 
+    toast.success("Logged out successfully");
+  };
 
   return (
     <>
-      {/* Mobile top bar */}
       <div className="lg:hidden flex justify-between items-center px-5 py-4 bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-40">
         <h1 className="font-extrabold text-lg bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500">
           DocAdmin
@@ -106,7 +118,6 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* Overlay for mobile */}
       {open && (
         <div
           onClick={() => setOpen(false)}
@@ -114,7 +125,6 @@ export default function Sidebar() {
         />
       )}
 
-      {/* Sidebar */}
       <div
         className={`
           fixed lg:static z-50
@@ -123,29 +133,48 @@ export default function Sidebar() {
           transform transition-transform duration-300
           ${open ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0
-          overflow-y-auto
+          flex flex-col
         `}
       >
-        <div className="p-6 text-xl font-bold">DocAdmin</div>
+        {/* Logo */}
+        <div className="p-6 text-xl font-bold tracking-wide">
+          DocAdmin
+        </div>
 
-        <nav className="px-4 space-y-2">
-          {menu.map((item) => (
-            <button
-              key={item}
-              onClick={() => setActive(item)}
-              className={`relative w-full text-left px-4 py-3 rounded-xl transition-all ${
-                active === item
-                  ? "bg-indigo-600"
-                  : "hover:bg-slate-800 text-slate-400"
-              }`}
-            >
-              {item}
-              {active === item && (
-                <span className="absolute left-0 top-0 h-full w-1 bg-cyan-400 rounded-r-md animate-pulse"></span>
-              )}
-            </button>
-          ))}
+        {/* Navigation */}
+        <nav className="px-4 space-y-2 flex-1 overflow-y-auto">
+          {menu.map((item) => {
+            const isActive = pathname === item.path;
+
+            return (
+              <Link
+                key={item.name}
+                href={item.path}
+                onClick={() => setOpen(false)}
+                className={`relative block px-4 py-3 rounded-xl transition-all duration-200 ${
+                  isActive
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
+                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                }`}
+              >
+                {item.name}
+
+                {isActive && (
+                  <span className="absolute left-0 top-0 h-full w-1 bg-cyan-400 rounded-r-md animate-pulse"></span>
+                )}
+              </Link>
+            );
+          })}
         </nav>
+
+        <div className="p-4 border-t border-slate-800">
+          <button
+            onClick={handleLogout}
+            className="w-full px-4 py-3 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white transition-all duration-200 font-medium cursor-pointer"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </>
   );

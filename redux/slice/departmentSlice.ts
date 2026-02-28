@@ -39,6 +39,29 @@ export const addDepartment = createAsyncThunk<
   }
 );
 
+//departmentList
+export const departmentList = createAsyncThunk<
+  any,
+  { name: string; description: string },
+  { rejectValue: string }
+>(
+  "department/list",
+  async (thunkAPI) => {
+    try {
+      const response = await AxiosInstance.get(
+        endPoints.doctor.departmentList
+      );
+      console.log("Department List Response:"+ response)
+      return response.data.data; 
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Department Creation failed"
+      );
+    }
+  }
+);
+
+
 export const departmentSlice = createSlice({
   name: "department",
   initialState,
@@ -55,6 +78,20 @@ export const departmentSlice = createSlice({
         state.error = null;
       })
       .addCase(addDepartment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Department Creation failed";
+      })
+
+      .addCase(departmentList.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(departmentList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload; 
+        state.error = null;
+      })
+      .addCase(departmentList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Department Creation failed";
       });
