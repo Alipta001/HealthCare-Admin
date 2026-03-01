@@ -92,7 +92,7 @@ export default function Sidebar() {
   const menu = [
     { name: "Overview", path: "/pages/dashboard" },
     { name: "Departments", path: "/pages/department" },
-    { name: "Doctors", path: "/admin/doctors" },
+    { name: "Doctors", path: "/pages/doctorList" },
     { name: "Appointments", path: "/admin/appointments" },
     { name: "Schedules", path: "/admin/schedules" },
     { name: "Settings", path: "/admin/settings" },

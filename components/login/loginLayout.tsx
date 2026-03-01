@@ -41,7 +41,7 @@ export default function LoginLayout() {
                 </div>
             </div>
             
-            <h1 className="text-4xl font-black text-white tracking-[0.25em] uppercase italic">Admin</h1>
+            <h1 className="text-4xl font-black text-white tracking-[0.25em] uppercase">Admin</h1>
             <div className="h-[2px] w-16 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mt-3"></div>
             <p className="text-blue-200/50 mt-5 font-semibold tracking-[0.3em] text-[10px] uppercase">
                 Secure Terminal Access

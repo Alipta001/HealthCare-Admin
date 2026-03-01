@@ -93,7 +93,7 @@ useEffect(()=>{
  */
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-left min-w-[600px] bg-white/80 backdrop-blur-xl rounded-[2.5rem] border border-white/50 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]">
+      <table className="w-full text-left min-w-[600px] bg-white/80 backdrop-blur-xl rounded-[2.5rem] border-white/50 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]">
         <thead className="bg-slate-50/80 backdrop-blur-md border-b border-slate-200">
           <tr>
             <th className="p-6 text-xs uppercase tracking-[0.25em] text-slate-400 font-black">Practitioner</th>
