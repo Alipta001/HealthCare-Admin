@@ -138,19 +138,12 @@ import AppointmentActions from "./appointmentActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
-export default function DoctorRow({ doctor }) {
-  const dispatch = useDispatch();
+export default function DoctorRow({ doctor, department=[] }) {
 
-  const { data: department } = useSelector((state) => state.department);
-
-  useEffect(() => {
-    dispatch(departmentList());
-  }, [dispatch]);
-
-  const departmentName =
-    (department || []).find(
-      (dept) => dept._id === doctor.departmentId
-    )?.name || "Unknown";
+const departmentName =
+  department.find(
+    (dept) => dept._id === doctor.departmentId
+  )?.name || "Unknown";
 
   // -------- SLOT HANDLING (Safe + Premium Format) --------
   const firstSlot = doctor?.availableSlots?.[0];

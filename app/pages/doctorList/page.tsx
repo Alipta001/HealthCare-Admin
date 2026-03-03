@@ -1,43 +1,32 @@
-// app/admin/doctors/page.jsx
+// import Sidebar from "@/components/layout/sidebar";
+// import DoctorPageHeader from "@/components/doctor/doctorPageHeader";
+// import DoctorPageTable from "@/components/doctor/doctorPageTable";
+// import DoctorListLayout from "@/components/doctor/doctorListLayout";
+
+// export default async function DoctorPage() {
+//   return (
+//     <div className="flex min-h-screen bg-gradient-to-br from-[#0b1e3d] via-[#0f2b59] to-[#081426] text-white">
+//       <Sidebar />
+
+//       <main className="flex-1 px-6 lg:px-12 py-10">
+//         <DoctorListLayout />
+//       </main>
+//     </div>
+//   );
+// }
+
 
 import Sidebar from "@/components/layout/sidebar";
-import DoctorPageHeader from "@/components/doctor/doctorPageHeader";
-import DoctorPageTable from "@/components/doctor/doctorPageTable";
+import DoctorListLayout from "@/components/doctor/doctorListLayout";
 
 export default async function DoctorPage() {
-  const doctors = [
-    {
-      _id: "1",
-      name: "Dr. Sarah Johnson",
-      department: "Cardiology",
-      email: "sarah@hospital.com",
-      experience: "12 Years",
-      image: "/images/login/profile-icon.png",
-    },
-    {
-      _id: "2",
-      name: "Dr. Michael Lee",
-      department: "Neurology",
-      email: "michael@hospital.com",
-      experience: "8 Years",
-      image: "/images/login/profile-icon.png",
-    },
-  ];
-
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      
-      {/* Sidebar */}
+    <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100 dark:bg-slate-950">
       <Sidebar />
 
-      {/* Main Content */}
-      <main className="flex-1 px-4 sm:px-8 lg:px-12 py-8 overflow-x-hidden">
-        <div className="max-w-7xl mx-auto">
-          <DoctorPageHeader />
-          <DoctorPageTable doctors={doctors} />
-        </div>
+      <main className="flex-1 px-6 lg:px-12 py-10 overflow-x-hidden">
+          <DoctorListLayout />
       </main>
-
     </div>
   );
 }

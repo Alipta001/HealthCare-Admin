@@ -1,6 +1,7 @@
 import { AxiosInstance } from "@/api/axios/axios";
 import { endPoints } from "@/api/endPoints/endPoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 
 interface DepartmentState {
@@ -30,6 +31,7 @@ export const addDepartment = createAsyncThunk<
         payload
       );
       console.log("Add Department Response:"+ response)
+      toast.success("Department Created Successfuly!")
       return response.data; 
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
@@ -51,7 +53,9 @@ export const departmentList = createAsyncThunk<
       const response = await AxiosInstance.get(
         endPoints.doctor.departmentList
       );
-      console.log("Department List Response:"+ response)
+      console.log("Department List Response:", response);
+console.log("Response data:", response.data);
+console.log("Response data.data:", response.data.data);
       return response.data.data; 
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
@@ -74,7 +78,11 @@ export const departmentSlice = createSlice({
       })
       .addCase(addDepartment.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload; 
+
+        if (action.payload?.data) {
+          state.data.push(action.payload.data);
+        }
+
         state.error = null;
       })
       .addCase(addDepartment.rejected, (state, action) => {
@@ -88,14 +96,15 @@ export const departmentSlice = createSlice({
       })
       .addCase(departmentList.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload; 
+        state.data = Array.isArray(action.payload)
+          ? action.payload
+          : [];
         state.error = null;
       })
       .addCase(departmentList.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? "Department Creation failed";
+        state.error = action.payload ?? "Department Fetch failed";
       });
   },
 });
-
 export default departmentSlice;

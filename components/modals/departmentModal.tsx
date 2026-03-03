@@ -96,6 +96,7 @@
 //   );
 // }
 
+
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -103,8 +104,8 @@ import { useForm } from "react-hook-form";
 import { addDepartment } from "@/redux/slice/departmentSlice";
 
 export default function DepartmentModal({ open, onClose }) {
-  const { data, loading, error } = useSelector((state) => state.department);
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -115,19 +116,25 @@ const dispatch = useDispatch()
   if (!open) return null;
 
   const handleFormSubmit = (formData) => {
-    console.log(formData)
-    const payload= {
+    const payload = {
       name: formData.name,
-      description: formData.description
-    }
-    dispatch(addDepartment(payload))
+      description: formData.description,
+    };
+
+    dispatch(addDepartment(payload));
     reset();
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
-      <div className="relative w-full max-w-md rounded-3xl bg-white shadow-2xl overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4"
+      onClick={onClose}   // 👈 closes when clicking outside
+    >
+      <div
+        className="relative w-full max-w-md rounded-3xl bg-white shadow-2xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()} // 👈 prevents closing when clicking inside
+      >
         <div className="h-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600" />
 
         <div className="p-8">
@@ -147,9 +154,10 @@ const dispatch = useDispatch()
             </p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">
-            {/* Department Name */}
+          <form
+            onSubmit={handleSubmit(handleFormSubmit)}
+            className="space-y-5"
+          >
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Department Name
@@ -164,7 +172,6 @@ const dispatch = useDispatch()
               />
             </div>
 
-            {/* Description */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Description
@@ -179,7 +186,6 @@ const dispatch = useDispatch()
               />
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full py-3 rounded-xl 
@@ -187,7 +193,7 @@ const dispatch = useDispatch()
                          text-white font-medium 
                          hover:shadow-lg hover:scale-[1.02] 
                          active:scale-[0.98] 
-                         transition-all duration-300"
+                         transition-all duration-300 cursor-pointer" 
             >
               Save Department
             </button>

@@ -155,7 +155,7 @@ const schema = yup.object({
     .required("Email is required"),
   password: yup
     .string()
-    .min(6, "Minimum 6 characters")
+    .min(6, "Minimum 8 characters")
     .required("Password is required"),
 });
 
@@ -202,7 +202,7 @@ useEffect(() => {
             className="w-full mt-1 px-5 py-4 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 shadow-inner group-hover:shadow-md"
           />
           {errors.email && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-[14px] font-bold mt-1">
               {errors.email.message}
             </p>
           )}
@@ -219,7 +219,7 @@ useEffect(() => {
             className="w-full mt-1 px-5 py-4 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 shadow-inner group-hover:shadow-md"
           />
           {errors.password && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-[14px] font-bold mt-1">
               {errors.password.message}
             </p>
           )}

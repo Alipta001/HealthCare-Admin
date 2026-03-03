@@ -72,16 +72,17 @@ import { doctorList } from "@/redux/slice/doctorSlice";
 import { departmentList } from "@/redux/slice/departmentSlice";
 
 export default function DoctorTable() {
-
-  const dispatch = useDispatch();
+const dispatch = useDispatch()
   const{
     data:doctors,
     loading, 
     error
-  } = useSelector((state) => state.doctor)
+  } = useSelector((state) => state.doctor);
 
+  const { data: department } = useSelector((state) => state.department);
 useEffect(()=>{
-  dispatch(doctorList())
+  dispatch(doctorList()),
+  dispatch(departmentList());
 },[])
 
 
@@ -104,7 +105,7 @@ useEffect(()=>{
         </thead>
         <tbody className="divide-y divide-slate-100">
           {doctors.map((doc) => (
-            <DoctorRow key={doc._id} doctor={doc} />
+            <DoctorRow key={doc._id} doctor={doc} department = {department}/>
           ))}
         </tbody>
       </table>

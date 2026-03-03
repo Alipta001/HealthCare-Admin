@@ -132,59 +132,47 @@
 //   );
 // }
 
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../layout/sidebar";
 import Header from "./header";
 import StatsCards from "./statsCard";
 import FilterBar from "./filterBar";
 import DoctorTable from "./doctorTable";
-
-// Modal components
-import AddDoctorModalLayout from "./modals/addDoctorModalLayout";
-import DoctorModalForm from "./modals/doctorModalForm";
-import DepartmentModal from "./modals/departmentModal";
+import DepartmentModal from "../modals/departmentModal";
+import { useDispatch, useSelector } from "react-redux";
+import { doctorList } from "@/redux/slice/doctorSlice";
 
 export default function AdminDashboard() {
   const [doctorModalOpen, setDoctorModalOpen] = useState(false);
   const [departmentModalOpen, setDepartmentModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const {data:doctors, error, loading} = useSelector((state)=> state.doctor);
+  useEffect(()=>{
+    dispatch(doctorList())
+  },[dispatch])
+  
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100 dark:bg-slate-950">
-      {/* Sidebar */}
       <Sidebar />
+      <main className="flex-1 px-6 lg:px-12 py-10 overflow-x-hidden">
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col w-full overflow-x-hidden">
         <Header
           onOpenDoctorModal={() => setDoctorModalOpen(true)}
           onOpenDepartmentModal={() => setDepartmentModalOpen(true)}
         />
 
-        <div className="p-4 sm:p-6 lg:p-10 space-y-6">
-          <StatsCards />
+        <div className="mt-8 space-y-6">
+          <StatsCards doctors= {doctors}/>
           <FilterBar />
           <div className="overflow-x-auto">
             <DoctorTable />
           </div>
         </div>
-      </div>
 
-      {/* Doctor Modal */}
-      <AddDoctorModalLayout
-        open={doctorModalOpen}
-        onClose={() => setDoctorModalOpen(false)}
-        title="Register New Doctor"
-        description="Add doctor profile and assign department"
-      >
-        <DoctorModalForm
-          onCancel={() => setDoctorModalOpen(false)}
-        />
-      </AddDoctorModalLayout>
-
-      {/* Department Modal */}
+      </main>
       <DepartmentModal
         open={departmentModalOpen}
         onClose={() => setDepartmentModalOpen(false)}
@@ -192,3 +180,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

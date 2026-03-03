@@ -40,7 +40,7 @@ export const addDoctor = createAsyncThunk<
   try {
     const response = await AxiosInstance.post(endPoints.doctor.create, payload);
     console.log("Add Doctor Response:", response.data);
-    toast.success("Doctor Created Successfuly")
+    toast.success("Doctor Created Successfuly");
     return response.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(
@@ -55,7 +55,10 @@ export const doctorList = createAsyncThunk<
   { rejectValue: string }
 >("doctor/list", async (_, thunkAPI) => {
   try {
-    const response = await AxiosInstance.post(endPoints.doctor.list,{page:1 , limit:10});
+    const response = await AxiosInstance.post(endPoints.doctor.list, {
+      page: 1,
+      limit: 10,
+    });
 
     console.log("Doctor List Response:", response.data);
 
@@ -67,6 +70,26 @@ export const doctorList = createAsyncThunk<
   }
 });
 
+export const deleteDoctor = createAsyncThunk<
+  string, 
+  string, 
+  { rejectValue: string }
+>("doctor/delete", async (doctorId, thunkAPI) => {
+  try {
+    const response = await AxiosInstance.post(
+      endPoints.doctor.delete, 
+      {id: doctorId}, 
+    );
+console.log(response.data)
+toast.success(response.data.message)
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(
+      error.response?.data?.message || "Doctor delete failed",
+    );
+  }
+});
+
 export const doctorSlice = createSlice({
   name: "doctor",
   initialState,
@@ -74,7 +97,7 @@ export const doctorSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-
+      //Add Doctor
       .addCase(addDoctor.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -91,6 +114,7 @@ export const doctorSlice = createSlice({
         state.error = action.payload;
       })
 
+      //Doctor List
       .addCase(doctorList.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -105,6 +129,26 @@ export const doctorSlice = createSlice({
       .addCase(doctorList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      //Delete Doctor
+      .addCase(deleteDoctor.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        deleteDoctor.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loading = false;
+          state.data = state.data
+          // filter(
+          //   (doctor) => doctor._id !== action.payload,
+          // );
+        },
+      )
+      .addCase(deleteDoctor.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Doctor delete failed";
       });
   },
 });

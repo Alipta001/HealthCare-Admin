@@ -343,6 +343,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { addDoctor } from "@/redux/slice/doctorSlice";
+import { useEffect } from "react";
 
 /* Yup Schema */
 const schema = yup.object().shape({
@@ -364,6 +365,7 @@ const schema = yup.object().shape({
 });
 
 export default function DoctorModalForm({
+  doctor,
   departmentId,
   departmentName,
   onCancel,
@@ -373,6 +375,7 @@ export default function DoctorModalForm({
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -386,6 +389,39 @@ export default function DoctorModalForm({
       availableSlots: [{ date: "", start: "", end: "" }],
     },
   });
+
+  useEffect(() => {
+    if (doctor) {
+      const formattedSlots = doctor.availableSlots?.map((slot) => {
+        const [start, end] = slot.time.split("-");
+
+        // Convert full date string → YYYY-MM-DD
+        const formattedDate = new Date(slot.date).toISOString().split("T")[0];
+
+        return {
+          date: formattedDate,
+          start: start || "",
+          end: end || "",
+        };
+      }) || [{ date: "", start: "", end: "" }];
+
+      reset({
+        name: doctor.name || "",
+        specialization: doctor.specialization || "",
+        fees: doctor.fees || "",
+        departmentId: doctor.departmentId || "",
+        availableSlots: formattedSlots,
+      });
+    } else {
+      reset({
+        name: "",
+        specialization: "",
+        fees: "",
+        departmentId: departmentId || "",
+        availableSlots: [{ date: "", start: "", end: "" }],
+      });
+    }
+  }, [doctor, reset, departmentId]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -409,9 +445,7 @@ export default function DoctorModalForm({
     };
     console.log("FINAL PAYLOAD:", doctorData);
     dispatch(addDoctor(doctorData));
-    
   };
-
 
   return (
     <form onSubmit={handleSubmit(submitDoctorForm)} className="space-y-7">
@@ -422,7 +456,7 @@ export default function DoctorModalForm({
         </label>
         <input
           type="text"
-          placeholder="Dr. Sarah Williams"
+          placeholder="Enter Doctor's Name"
           {...register("name")}
           className="w-full px-5 py-3 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition"
         />
@@ -438,7 +472,7 @@ export default function DoctorModalForm({
         </label>
         <input
           type="text"
-          placeholder="Cardiologist"
+          placeholder="Enter Specialization"
           {...register("specialization")}
           className="w-full px-5 py-3 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition"
         />
@@ -474,7 +508,7 @@ export default function DoctorModalForm({
         </label>
         <input
           type="number"
-          placeholder="$120"
+          placeholder="$10"
           {...register("fees")}
           className="w-full px-5 py-3 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition"
         />

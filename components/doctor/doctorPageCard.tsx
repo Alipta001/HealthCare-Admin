@@ -1,10 +1,10 @@
 "use client";
 
 import { departmentList } from "@/redux/slice/departmentSlice";
-import AppointmentActions from "../adminDashboard/appointmentActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ActionButtons from "./actionButtons";
 
 export default function DoctorPageCard({ doctor }) {
   const router = useRouter();
@@ -84,7 +84,7 @@ export default function DoctorPageCard({ doctor }) {
 
       {/* Actions */}
       <div onClick={(e) => e.stopPropagation()}>
-        <AppointmentActions doctorId={doctor._id} />
+        <ActionButtons doctorId={doctor._id} />
       </div>
     </div>
   );

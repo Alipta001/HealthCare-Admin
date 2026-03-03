@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import AddDoctorModalLayout from "../adminDashboard/modals/addDoctorModalLayout";
+import AddDoctorModalLayout from "../modals/addDoctorModalLayout";
 
 type Department = {
   id: number;

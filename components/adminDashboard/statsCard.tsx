@@ -1,6 +1,9 @@
-export default function StatsCards() {
+export default function StatsCards(doctors) {
+  const doctorCount = doctors? doctors.doctors.length : 0;
+  /* console.log("List of Doctors:", doctors) */
+ /*  console.log(doctorCount) */
   const stats = [
-    { title: "Total Doctors", value: "128" },
+    { title: "Total Doctors", value: doctorCount },
     { title: "Pending Appointments", value: "42" },
     { title: "Accepted Today", value: "19" },
   ];

@@ -69,6 +69,7 @@
 
 // export default authSlice.reducer;
 
+
 import { AxiosInstance } from "@/api/axios/axios";
 import { endPoints } from "@/api/endPoints/endPoints";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -138,6 +139,7 @@ export const authSlice = createSlice({
       state.error = null;
       const cookie = new Cookies();
       cookie.remove("token", { path: "/" });
+      cookie.remove("refreshToken",{ path: "/" })
     },
   },
   extraReducers: (builder) => {
@@ -150,10 +152,10 @@ export const authSlice = createSlice({
 
       .addCase(authLogin.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.data = action.payload.data;
         state.isAuthenticated = true;
         state.error = null;
-        state.token = action.payload.token || state.token;
+        state.token = action.payload.token;
       })
 
       .addCase(authLogin.rejected, (state, action) => {
