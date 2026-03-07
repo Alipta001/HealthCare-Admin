@@ -1,7 +1,4 @@
-"use client";
-
 import { AlertTriangle, X } from "lucide-react";
-import ModalPortal from "@/components/common/ModalPortal";
 
 interface DeleteModalProps {
   isOpen: boolean;
@@ -14,7 +11,6 @@ export default function DeleteModal({ isOpen, onClose, onConfirm, name }: Delete
   if (!isOpen) return null;
 
   return (
-    <ModalPortal>
       <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
         <div 
           className="absolute inset-0 bg-[#081028]/80 backdrop-blur-md transition-opacity cursor-pointer"
@@ -60,6 +56,5 @@ export default function DeleteModal({ isOpen, onClose, onConfirm, name }: Delete
           </div>
         </div>
       </div>
-    </ModalPortal>
   );
 }

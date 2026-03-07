@@ -342,8 +342,8 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { addDoctor } from "@/redux/slice/doctorSlice";
-import { useEffect } from "react";
+import { addDoctor, updateDoctor } from "@/redux/slice/doctorSlice";
+import { useCallback, useEffect } from "react";
 
 /* Yup Schema */
 const schema = yup.object().shape({
@@ -369,6 +369,7 @@ export default function DoctorModalForm({
   departmentId,
   departmentName,
   onCancel,
+  onClose
 }) {
   const dispatch = useDispatch();
 
@@ -428,7 +429,30 @@ export default function DoctorModalForm({
     name: "availableSlots",
   });
 
-  const submitDoctorForm = (data) => {
+
+  const handleAllFormSubmit =useCallback(async (data) =>{
+    console.log("Doctor Form Rendering............................")
+    if(doctor){
+     console.log("Updated Form Submitted:", data);
+
+    const formattedSlots = data.availableSlots.map((slot) => ({
+      date: slot.date,
+      time: `${slot.start}-${slot.end}`,
+    }));
+
+    const payload = {
+      id: doctor._id,
+      name: data.name,
+      specialization: data.specialization,
+      departmentId: data.departmentId,
+      fees: data.fees.toString(),
+      availableSlots: formattedSlots,
+    };
+    console.log("FINAL PAYLOAD:", payload);
+    await dispatch(updateDoctor(payload)).unwrap();
+  onClose();
+    }
+    else{
     console.log("Form submitted:", data);
 
     const formattedSlots = data.availableSlots.map((slot) => ({
@@ -444,11 +468,13 @@ export default function DoctorModalForm({
       availableSlots: formattedSlots,
     };
     console.log("FINAL PAYLOAD:", doctorData);
-    dispatch(addDoctor(doctorData));
-  };
+    await dispatch(addDoctor(doctorData)).unwrap();
+    onClose()
+    }
+  },[doctor, dispatch, onClose])
 
   return (
-    <form onSubmit={handleSubmit(submitDoctorForm)} className="space-y-7">
+    <form onSubmit={handleSubmit(handleAllFormSubmit)} className="space-y-7">
       <input type="hidden" {...register("departmentId")} />
       <div>
         <label className="block text-sm font-semibold text-slate-600 mb-2">
@@ -484,7 +510,8 @@ export default function DoctorModalForm({
       </div>
 
       {/* Department Display Only */}
-      <div>
+      {
+        !doctor &&  <div>
         <label className="block text-sm font-semibold text-slate-600 mb-2">
           Department
         </label>
@@ -500,6 +527,7 @@ export default function DoctorModalForm({
           <p className="text-red-500 text-sm">{errors.departmentId.message}</p>
         )}
       </div>
+      }
 
       {/* Fees */}
       <div>

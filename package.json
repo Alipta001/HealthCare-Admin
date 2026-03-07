@@ -21,6 +21,7 @@
     "react-cookie": "^8.0.1",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.2",
+    "react-paginate": "^8.3.0",
     "react-redux": "^9.2.0",
     "react-toast": "^1.0.3",
     "redux-toolkit": "^1.1.2",

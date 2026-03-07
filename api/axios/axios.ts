@@ -1,7 +1,6 @@
-
 import axios from "axios";
 import { Cookies } from "react-cookie";
-export const BaseURL = /* process.env.NEXT_PUBLIC_BACKEND_URL || */ "http://localhost:4000";
+export const BaseURL = /*process.env.NEXT_PUBLIC_BACKEND_URL ||*/ "http://localhost:4000";
 
 
 console.log("BaseURL:", BaseURL);
@@ -12,6 +11,7 @@ export const AxiosInstance = axios.create({
   },
   withCredentials:true
 });
+
 
 AxiosInstance.interceptors.request.use(
   function (config) {
@@ -28,6 +28,7 @@ AxiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 AxiosInstance.interceptors.response.use(
   (response) => response,

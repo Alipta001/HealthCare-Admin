@@ -29,7 +29,6 @@
 //   }
 // );
 
-
 // export const authSlice = createSlice({
 //   name: "auth",
 //   initialState,
@@ -70,10 +69,11 @@
 // export default authSlice.reducer;
 
 
+
 import { AxiosInstance } from "@/api/axios/axios";
 import { endPoints } from "@/api/endPoints/endPoints";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Cookies, useCookies } from "react-cookie";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Cookies } from "react-cookie";
 
 interface User {
   id: string;
@@ -89,73 +89,84 @@ interface AuthState {
   error: string | null;
 }
 
-const cookie = new Cookies();
-const token = cookie.get("token") as string | undefined;
+const cookies = new Cookies();
+const savedToken = cookies.get("token") as string | undefined;
 
 const initialState: AuthState = {
-  isAuthenticated: Boolean(token),
+  isAuthenticated: Boolean(savedToken),
   data: null,
-  token: token || null,
+  token: savedToken || null,
   loading: false,
   error: null,
 };
 
 
+//Login
 export const authLogin = createAsyncThunk<
-  any,
+  { token: string; data: User },
   { email: string; password: string },
   { rejectValue: string }
->(
-  "auth/signin",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await AxiosInstance.post(
-        endPoints.auth.signin,
-        payload
-      );
-      console.log(response)
-    const cookies = new Cookies();
-      const token = response.data.token;
+>("auth/login", async (payload, thunkAPI) => {
+  try {
+    const response = await AxiosInstance.post(
+      endPoints.auth.signin,
+      payload
+    );
 
-      cookies.set("token", token || "", { path: "/" });
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Login failed"
-      );
-    }
+    return response.data;
+
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(
+      error.response?.data?.message || "Login failed"
+    );
   }
-);
+});
 
+
+
+//LOGOUT
+export const authLogout = createAsyncThunk<
+  any,
+  void,
+  { rejectValue: string }
+>("auth/logout", async (_, thunkAPI) => {
+  try {
+    const response = await AxiosInstance.post(endPoints.auth.logout);
+    const cookies = new Cookies();
+    cookies.remove("token", { path: "/" });
+    cookies.remove("refreshToken", { path: "/" });
+    return response.data;
+
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(
+      error.response?.data?.message || "Logout failed"
+    );
+  }
+});
+
+
+//slice
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.data = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      state.loading = false;
-      state.error = null;
-      const cookie = new Cookies();
-      cookie.remove("token", { path: "/" });
-      cookie.remove("refreshToken",{ path: "/" })
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
+
       .addCase(authLogin.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.isAuthenticated = false;
       })
 
       .addCase(authLogin.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload.data;
+        state.token = action.payload.token;
         state.isAuthenticated = true;
         state.error = null;
-        state.token = action.payload.token;
+        // save token in cookie
+        const cookies = new Cookies();
+        cookies.set("token", action.payload.token, { path: "/" });
       })
 
       .addCase(authLogin.rejected, (state, action) => {
@@ -164,12 +175,31 @@ export const authSlice = createSlice({
         state.data = null;
         state.token = null;
         state.error = action.payload ?? "Login failed";
-        const cookie = new Cookies();
-        cookie.remove("token", { path: "/" });
+
+        const cookies = new Cookies();
+        cookies.remove("token", { path: "/" });
+      })
+
+
+      //logout
+      .addCase(authLogout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(authLogout.fulfilled, (state) => {
+        state.data = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.loading = false;
+        state.error = null;
+      })
+
+      .addCase(authLogout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Logout failed";
       });
   },
 });
 
-export const { logout } = authSlice.actions;
-
-export default authSlice.reducer;
+export default authSlice;

@@ -130,22 +130,123 @@
 
 
 
+/**------------------Claude------------------ */
+
+// "use client";
+
+// import AppointmentActions from "./appointmentActions";
+
+// interface DoctorRowProps {
+//   doctor: any;
+//   department?: any[];
+// }
+
+// export default function DoctorRow({ doctor, department = [] }: DoctorRowProps) {
+//   // LOGIC FIX: Check if departmentId is an object or a string
+//   const docDeptId = typeof doctor.departmentId === 'object' 
+//     ? doctor.departmentId._id 
+//     : doctor.departmentId;
+
+//   const departmentMatch = department.find((dept) => dept._id === docDeptId);
+//   const departmentName = departmentMatch ? departmentMatch.name : "Unknown Dept";
+
+//   const firstSlot = doctor?.availableSlots?.[0];
+
+//   const formattedDate = firstSlot
+//     ? new Date(firstSlot.date).toLocaleDateString("en-US", {
+//         day: "2-digit",
+//         month: "short",
+//         year: "numeric",
+//       })
+//     : "No Date";
+
+//   const formattedTime = firstSlot ? firstSlot.time : "No Time";
+
+//   return (
+//     <tr className="group border-b border-slate-100 hover:bg-gradient-to-r hover:from-indigo-50/70 hover:to-white transition-all duration-300">
+      
+//       {/* Practitioner Info */}
+//       <td className="p-6">
+//         <div className="flex items-center gap-4">
+//           <div className="relative">
+//             <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-indigo-500 to-cyan-400 opacity-20 blur-md group-hover:opacity-40 transition"></div>
+//             <img
+//               src="/images/login/profile-icon.png"
+//               alt={doctor.name}
+//               className="relative w-14 h-14 rounded-2xl object-cover shadow-lg border border-white group-hover:scale-105 transition duration-300"
+//             />
+//           </div>
+//           <div>
+//             <p className="font-bold text-slate-800 text-[15px] tracking-tight">
+//               {doctor.name}
+//             </p>
+//             <p className="text-xs text-slate-400 font-medium tracking-wide">
+//               Senior Specialist
+//             </p>
+//           </div>
+//         </div>
+//       </td>
+
+//       {/* Department Name - Fixed Alignment */}
+//       <td className="p-6">
+//         <span className="inline-flex px-4 py-2 text-xs font-bold tracking-wider uppercase rounded-xl bg-slate-100 text-slate-600">
+//           {departmentName}
+//         </span>
+//       </td>
+
+//       {/* Available Slot - Centered */}
+//       <td className="p-6">
+//         <div className="flex justify-center">
+//           {firstSlot ? (
+//             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-200 group-hover:shadow-xl transition-all duration-300">
+//               <div className="flex flex-col leading-tight text-left">
+//                 <span className="text-[10px] uppercase tracking-widest opacity-70">
+//                   Next Available
+//                 </span>
+//                 <span className="text-sm font-bold tracking-wide">
+//                   {formattedDate}
+//                 </span>
+//               </div>
+//               <div className="h-6 w-px bg-white/30"></div>
+//               <div className="text-sm font-semibold tracking-wide">
+//                 {formattedTime}
+//               </div>
+//             </div>
+//           ) : (
+//             <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-4 py-2 rounded-xl">
+//               No Slots Available
+//             </span>
+//           )}
+//         </div>
+//       </td>
+
+//       {/* Actions - Centered */}
+//       <td className="p-6 text-center">
+//         <div className="flex justify-center">
+//           <AppointmentActions />
+//         </div>
+//       </td>
+//     </tr>
+//   );
+// }
+
+
+
 
 "use client";
 
-import { departmentList } from "@/redux/slice/departmentSlice";
 import AppointmentActions from "./appointmentActions";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 
-export default function DoctorRow({ doctor, department=[] }) {
+export default function DoctorRow({ doctor, department = [] }: any) {
 
-const departmentName =
-  department.find(
-    (dept) => dept._id === doctor.departmentId
-  )?.name || "Unknown";
+  const docDeptId =
+    typeof doctor.departmentId === "object"
+      ? doctor.departmentId._id
+      : doctor.departmentId;
 
-  // -------- SLOT HANDLING (Safe + Premium Format) --------
+  const departmentMatch = department.find((dept: any) => dept._id === docDeptId);
+  const departmentName = departmentMatch ? departmentMatch.name : "Unknown Dept";
+
   const firstSlot = doctor?.availableSlots?.[0];
 
   const formattedDate = firstSlot
@@ -156,19 +257,17 @@ const departmentName =
       })
     : "No Date";
 
-  const formattedTime = firstSlot
-    ? firstSlot.time
-    : "No Time";
+  const formattedTime = firstSlot ? firstSlot.time : "No Time";
 
   return (
     <tr className="group border-b border-slate-100 hover:bg-gradient-to-r hover:from-indigo-50/70 hover:to-white transition-all duration-300">
-      
-      {/* Doctor Info */}
+
       <td className="p-6">
         <div className="flex items-center gap-4">
-          
+
           <div className="relative">
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-indigo-500 to-cyan-400 opacity-20 blur-md group-hover:opacity-40 transition"></div>
+
             <img
               src="/images/login/profile-icon.png"
               alt={doctor.name}
@@ -180,51 +279,57 @@ const departmentName =
             <p className="font-bold text-slate-800 text-[15px] tracking-tight">
               {doctor.name}
             </p>
+
             <p className="text-xs text-slate-400 font-medium tracking-wide">
               Senior Specialist
             </p>
           </div>
+
         </div>
       </td>
 
-      {/* Department */}
       <td className="p-6">
         <span className="inline-flex px-4 py-2 text-xs font-bold tracking-wider uppercase rounded-xl bg-slate-100 text-slate-600">
           {departmentName}
         </span>
       </td>
 
-      {/* Available Slot */}
       <td className="p-6">
-        {firstSlot ? (
-          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-200 group-hover:shadow-xl transition-all duration-300">
-            
-            <div className="flex flex-col leading-tight">
-              <span className="text-[10px] uppercase tracking-widest opacity-70">
-                Next Available
-              </span>
-              <span className="text-sm font-bold tracking-wide">
-                {formattedDate}
-              </span>
-            </div>
+        <div className="flex justify-center">
+          {firstSlot ? (
+            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-200 group-hover:shadow-xl transition-all duration-300">
 
-            <div className="h-6 w-px bg-white/30"></div>
+              <div className="flex flex-col leading-tight text-left">
+                <span className="text-[10px] uppercase tracking-widest opacity-70">
+                  Next Available
+                </span>
 
-            <div className="text-sm font-semibold tracking-wide">
-              {formattedTime}
+                <span className="text-sm font-bold tracking-wide">
+                  {formattedDate}
+                </span>
+              </div>
+
+              <div className="h-6 w-px bg-white/30"></div>
+
+              <div className="text-sm font-semibold tracking-wide">
+                {formattedTime}
+              </div>
+
             </div>
-          </div>
-        ) : (
-          <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-4 py-2 rounded-xl">
-            No Slots Available
-          </span>
-        )}
+          ) : (
+            <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-4 py-2 rounded-xl">
+              No Slots Available
+            </span>
+          )}
+        </div>
       </td>
 
-      {/* Actions */}
-      <td className="p-6">
-        <AppointmentActions />
+      <td className="p-6 text-center">
+        <div className="flex justify-center">
+          <AppointmentActions />
+        </div>
       </td>
+
     </tr>
   );
 }
