@@ -1,230 +1,158 @@
-// export default function FilterBar() {
-//   return (
-//     <div className="bg-white p-4 rounded-xl shadow flex flex-wrap gap-4 items-center">
-//       {/* Department Filter */}
-//       <select className="border p-2 rounded-lg focus:outline-indigo-500">
-//         <option>All Departments</option>
-//         <option>Cardiology</option>
-//         <option>Neurology</option>
-//         <option>Orthopedic</option>
-//       </select>
-
-//       {/* Doctor Filter */}
-//       <select className="border p-2 rounded-lg focus:outline-indigo-500">
-//         <option>All Doctors</option>
-//         <option>Dr. Smith</option>
-//         <option>Dr. John</option>
-//       </select>
-
-//       {/* Search */}
-//       <input
-//         type="text"
-//         placeholder="Search doctor..."
-//         className="border p-2 rounded-lg flex-1 min-w-[200px] focus:outline-indigo-500"
-//       />
-
-//       <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
-//         Search
-//       </button>
-//     </div>
-//   );
-// }
-
-// export default function FilterBar() {
-//   return (
-//     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white/70 backdrop-blur-xl p-5 rounded-[2rem] border border-white shadow-xl shadow-slate-200/40">
-//       {/* Search Input */}
-//       <div className="relative group col-span-1 md:col-span-1">
-//         <input
-//           type="text"
-//           placeholder="Search by name..."
-//           className="w-full bg-slate-100/80 border-none rounded-2xl py-3.5 pl-12 focus:ring-2 focus:ring-indigo-500/20 focus:bg-white transition-all font-medium placeholder:text-slate-400"
-//         />
-//         <span className="absolute left-4 top-4 opacity-40">🔍</span>
-//       </div>
-
-//       {/* Department Dropdown */}
-//       <select className="bg-slate-100/80 border-none rounded-2xl py-3.5 px-4 font-bold text-slate-600 focus:ring-2 focus:ring-indigo-500/20 cursor-pointer">
-//         <option>All Departments</option>
-//         <option>Cardiology</option>
-//         <option>Neurology</option>
-//         <option>Orthopedic</option>
-//       </select>
-
-//       {/* Doctor Dropdown */}
-//       <select className="bg-slate-100/80 border-none rounded-2xl py-3.5 px-4 font-bold text-slate-600 focus:ring-2 focus:ring-indigo-500/20 cursor-pointer">
-//         <option>All Seniority</option>
-//         <option>Senior Consultant</option>
-//         <option>Resident Doctor</option>
-//       </select>
-
-//       {/* Search Action */}
-//       <button className="bg-indigo-600 text-white font-bold rounded-2xl py-3.5 hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 transition-all active:scale-95">
-//         Search Database
-//       </button>
-//     </div>
-//   );
-// }
-
-
-
-// export default function FilterBar({doctors}) {
-//   return (
-//     <div
-//       className="relative bg-white/60 backdrop-blur-2xl 
-//       border border-white/40 
-//       rounded-[2rem] 
-//       p-6 
-//       shadow-[0_15px_50px_-10px_rgba(0,0,0,0.1)]"
-//     >
-//       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-//         {/* Search */}
-//         <div className="relative group">
-//           <div className="relative bg-slate-100/80 rounded-2xl py-3.5 pl-12 pr-4 transition-all focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:bg-white">
-        
-//         {/* Autocomplete fills the container */}
-//         <Autocomplete
-//            disablePortal={false}
-//           options={doctors || []}
-//            getOptionLabel={(option) => option.name || ""}
-//           sx={{ width: "100%" }}
-//           renderInput={(params) => (
-//             <TextField
-//               {...params}
-//               variant="standard"
-//               placeholder="Search doctor..."
-//               InputProps={{
-//                 ...params.InputProps,
-//                 disableUnderline: true, // remove MUI underline
-//               }}
-//               InputLabelProps={{ shrink: false }}
-//               className="text-slate-900 font-medium placeholder:text-slate-400"
-//             />
-//           )}
-//         />
-//         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-//           <LucideSearch className="w-5 h-5" />
-//         </div>
-//       </div>
-//         </div>
-
-//         {/* Department */}
-//         <select className="bg-slate-100/80 rounded-2xl py-3.5 px-4 font-semibold text-slate-600 focus:ring-2 focus:ring-indigo-500/20 transition">
-//           <option>All Departments</option>
-//           <option>Cardiology</option>
-//           <option>Neurology</option>
-//           <option>Orthopedic</option>
-//         </select>
-
-//         {/* Seniority */}
-//         <select className="bg-slate-100/80 rounded-2xl py-3.5 px-4 font-semibold text-slate-600 focus:ring-2 focus:ring-indigo-500/20 transition">
-//           <option>All Levels</option>
-//           <option>Senior Consultant</option>
-//           <option>Resident Doctor</option>
-//         </select>
-
-//         {/* Action */}
-//         <button
-//           className="bg-gradient-to-r from-indigo-600 to-indigo-700 
-//           text-white font-bold rounded-2xl py-3.5
-//           hover:shadow-xl hover:shadow-indigo-300
-//           active:scale-95 transition-all duration-300"
-//         >
-//           Search Database
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
-
-
 "use client";
 
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Autocomplete, TextField } from "@mui/material";
 import { Search as LucideSearch } from "lucide-react";
-import { departmentList } from "@/redux/slice/departmentSlice";
+
+import useDebounce from "@/hooks/useDebounce";
+
 import {
   departmentWiseDoctor,
   doctorList,
   setFilteredDoctors,
   clearFilter,
-} from "@/redux/slice/doctorSlice";
+} from "@/redux/slice/doctorSlice/doctorSlice";
+import { FilterBarProps } from "@/types/components";
+import { Department } from "@/types/api";
 
-export default function FilterBar({ doctors = [] }) {
+export default function FilterBar({
+  doctors = [],
+  departments = [],
+}: FilterBarProps) {
   const dispatch: any = useDispatch();
 
-  const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
-  const [selectedDepartment, setSelectedDepartment] = useState<any>(null);
+  const [selectedDepartment, setSelectedDepartment] =
+    useState<Department | null>(null);
+  const [departmentInput, setDepartmentInput] = useState("");
+  const [doctorInput, setDoctorInput] = useState("");
 
-  const {
-    data: departmentListData = [],
-    loading: departmentLoading,
-  } = useSelector((state: any) => state.department);
+  const debouncedDoctor = useDebounce(doctorInput, 500);
+  const debouncedDepartment = useDebounce(departmentInput, 500);
 
   useEffect(() => {
-    dispatch(departmentList());
-  }, [dispatch]);
+    handleSearch();
+  }, [debouncedDoctor, debouncedDepartment, selectedDepartment]);
 
-  const handleSearch = () => {
-    const deptId: string | undefined = selectedDepartment?._id;
-    const name: string | undefined = selectedDoctor?.name;
+  const handleSearch = async () => {
+    const doctorName = debouncedDoctor.trim().toLowerCase();
+    const deptName = debouncedDepartment.trim().toLowerCase();
+    const deptId = selectedDepartment?._id;
 
-    if (!deptId && !name) {
-      // no filters -> show full doctor list again
-      dispatch(clearFilter());
-      dispatch(doctorList({ page: 1, limit: 10 }));
-      return;
-    }
+    try {
+      /* NO FILTER */
 
-    if (deptId) {
-      dispatch(departmentWiseDoctor(deptId))
-        .unwrap()
-        .then((result: any[]) => {
-          if (name) {
-            const filteredByName = result.filter((d: any) =>
-              d.name.toLowerCase().includes(name.toLowerCase())
+      if (!doctorName && !deptId && !deptName) {
+        dispatch(clearFilter());
+
+        dispatch(
+          doctorList({
+            page: 1,
+            limit: 10,
+            name: "",
+          }),
+        );
+
+        return;
+      }
+
+      /* DEPARTMENT SELECTED */
+
+      if (deptId) {
+        const result = await dispatch(departmentWiseDoctor(deptId)).unwrap();
+
+        let filtered = result;
+
+        if (doctorName) {
+          filtered = filtered.filter((doc: any) =>
+            doc.name.toLowerCase().includes(doctorName),
+          );
+        }
+
+        dispatch(setFilteredDoctors(filtered));
+        return;
+      }
+
+      /* DEPARTMENT TYPED */
+
+      if (deptName) {
+        const matchedDept = departments.find((dept: any) =>
+          dept.name.toLowerCase().includes(deptName),
+        );
+
+        if (matchedDept) {
+          const result = await dispatch(
+            departmentWiseDoctor(matchedDept._id),
+          ).unwrap();
+
+          let filtered = result;
+
+          if (doctorName) {
+            filtered = filtered.filter((doc: any) =>
+              doc.name.toLowerCase().includes(doctorName),
             );
-            dispatch(setFilteredDoctors(filteredByName));
           }
-        })
-        .catch((e: any) => {
-          console.warn("filter failed", e);
-        });
-    } else if (name) {
-      const filteredByName = doctors.filter((d: any) =>
-        d.name.toLowerCase().includes(name.toLowerCase())
-      );
-      dispatch(setFilteredDoctors(filteredByName));
+
+          dispatch(setFilteredDoctors(filtered));
+        }
+
+        return;
+      }
+
+      /* DOCTOR NAME ONLY */
+
+      if (doctorName) {
+        dispatch(
+          doctorList({
+            page: 1,
+            limit: 10,
+            name: doctorName,
+          }),
+        );
+      }
+    } catch (error) {
+      console.error("Search failed:", error);
     }
   };
 
-  return (
-    <div
-      className="relative bg-white/60 backdrop-blur-2xl
-      border border-white/40
-      rounded-[2rem]
-      p-6
-      shadow-[0_15px_50px_-10px_rgba(0,0,0,0.1)]"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+  const handleReset = () => {
+    setDoctorInput("");
+    setDepartmentInput("");
+    setSelectedDepartment(null);
 
+    dispatch(clearFilter());
+
+    dispatch(
+      doctorList({
+        page: 1,
+        limit: 10,
+        name: "",
+      }),
+    );
+  };
+
+  return (
+    <div className="relative bg-white/60 backdrop-blur-2xl border border-white/40 rounded-[2rem] p-6 shadow-[0_15px_50px_-10px_rgba(0,0,0,0.1)]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Doctor Search */}
+
         <div className="relative">
           <div className="relative bg-slate-100/80 rounded-2xl py-3.5 pl-12 pr-4">
-
             <Autocomplete
+              freeSolo
               options={doctors}
-              value={selectedDoctor}
-              onChange={(event, newValue) => setSelectedDoctor(newValue)}
-              getOptionLabel={(option) => option?.name || ""}
-              isOptionEqualToValue={(option, value) => option._id === value._id}
+              inputValue={doctorInput}
+              onInputChange={(event, newValue) =>
+                setDoctorInput(newValue || "")
+              }
+              getOptionLabel={(option: any) =>
+                typeof option === "string" ? option : option?.name || ""
+              }
               renderInput={(params) => (
                 <TextField
                   {...params}
                   variant="standard"
-                  placeholder="Search doctor..."
+                  placeholder="Search Doctor..."
                   InputProps={{
                     ...params.InputProps,
                     disableUnderline: true,
@@ -236,17 +164,23 @@ export default function FilterBar({ doctors = [] }) {
             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
               <LucideSearch className="w-5 h-5" />
             </div>
-
           </div>
         </div>
 
-        {/* Department Autocomplete */}
+        {/* Department */}
+
         <Autocomplete
-          options={departmentListData}
+          options={departments}
           value={selectedDepartment}
+          inputValue={departmentInput}
           onChange={(event, newValue) => setSelectedDepartment(newValue)}
-          getOptionLabel={(option) => option?.name || ""}
-          isOptionEqualToValue={(option, value) => option._id === value._id}
+          onInputChange={(event, newValue) =>
+            setDepartmentInput(newValue || "")
+          }
+          getOptionLabel={(option: any) => option?.name || ""}
+          isOptionEqualToValue={(option: any, value: any) =>
+            option._id === value?._id
+          }
           renderInput={(params) => (
             <TextField
               {...params}
@@ -256,17 +190,17 @@ export default function FilterBar({ doctors = [] }) {
           )}
         />
 
-        {/* Search Button */}
+        {/* Reset */}
+
         <button
-          onClick={handleSearch}
+          onClick={handleReset}
           className="bg-gradient-to-r from-indigo-600 to-indigo-700
           text-white font-bold rounded-2xl py-3.5
           hover:shadow-xl hover:shadow-indigo-300
           active:scale-95 transition-all duration-300"
         >
-          Search Database
+          Reset
         </button>
-
       </div>
     </div>
   );

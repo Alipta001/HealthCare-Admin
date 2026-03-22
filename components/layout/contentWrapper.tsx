@@ -9,16 +9,14 @@ export default function ContentWrapper({ children }: { children: ReactNode }) {
   const isAuthPage = noSidebarRoutes.includes(pathname);
 
   return (
-    <main 
+    <main
       className={`flex-1 min-h-screen transition-all duration-300 bg-slate-50 dark:bg-[#0b0f1a] ${
         !isAuthPage ? "lg:ml-72" : ""
       }`}
     >
-      <div 
+      <div
         className={`w-full mx-auto ${
-          !isAuthPage 
-            ? "pt-24 pb-10 px-4 sm:px-6 lg:px-8 lg:pt-10" 
-            : ""
+          !isAuthPage ? "pt-24 pb-10 px-4 sm:px-6 lg:px-8 lg:pt-10" : ""
         }`}
       >
         {children}

@@ -5,14 +5,22 @@ import { Bell } from "lucide-react";
 interface HeaderProps {
   onOpenDoctorModal?: () => void;
   onOpenDepartmentModal?: () => void;
+  title?: string;
+  showAddButton?: boolean; // new prop
 }
-export default function Header({ onOpenDoctorModal, onOpenDepartmentModal }: HeaderProps) {
+
+export default function Header({
+  onOpenDoctorModal,
+  onOpenDepartmentModal,
+  title,
+  showAddButton = false,
+}: HeaderProps) {
   return (
     <div className="relative bg-gradient-to-r from-[#0f172a] via-[#111c2d] to-[#0f172a] border-b border-white/5 px-4 sm:px-6 py-3 sm:py-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4 sm:gap-6">
       {/* Left */}
       <div className="flex flex-col">
         <h1 className="text-xl sm:text-3xl font-bold text-white tracking-tight">
-          Dashboard
+          {title}
         </h1>
         <p className="text-slate-400 text-xs sm:text-sm mt-1">
           Manage hospital departments and medical personnel.
@@ -33,27 +41,29 @@ export default function Header({ onOpenDoctorModal, onOpenDepartmentModal }: Hea
           </div>
         </div>
 
-        {/* Button */}
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-5 w-full sm:w-auto mt-3 sm:mt-0">
-          <button
-            onClick={onOpenDepartmentModal}
-            className="
-    flex items-center justify-center gap-3
-    bg-gradient-to-r from-slate-900 to-indigo-800
-    text-white px-5 py-2.5 rounded-2xl font-semibold
-    shadow-lg shadow-indigo-900/30
-    transition-all duration-300 ease-out
-    hover:from-indigo-900 hover:to-indigo-600
-    hover:-translate-y-1
-    hover:shadow-2xl hover:shadow-indigo-700/40
-    active:translate-y-0 active:shadow-md
-    whitespace-nowrap cursor-pointer
-  "
-          >
-            <span className="text-lg">+</span>
-            <span className="hidden sm:inline">Add Department</span>
-          </button>
-        </div>
+        {/* Button: Show only if prop is true */}
+        {showAddButton && (
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-5 w-full sm:w-auto mt-3 sm:mt-0">
+            <button
+              onClick={onOpenDepartmentModal}
+              className="
+                flex items-center justify-center gap-3
+                bg-gradient-to-r from-slate-900 to-indigo-800
+                text-white px-5 py-2.5 rounded-2xl font-semibold
+                shadow-lg shadow-indigo-900/30
+                transition-all duration-300 ease-out
+                hover:from-indigo-900 hover:to-indigo-600
+                hover:-translate-y-1
+                hover:shadow-2xl hover:shadow-indigo-700/40
+                active:translate-y-0 active:shadow-md
+                whitespace-nowrap cursor-pointer
+              "
+            >
+              <span className="text-lg">+</span>
+              <span className="hidden sm:inline">Add Department</span>
+            </button>
+          </div>
+        )}
 
         {/* Desktop Bell */}
         <div className="hidden lg:flex relative">

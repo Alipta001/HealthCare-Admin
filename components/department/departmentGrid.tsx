@@ -1,23 +1,27 @@
-"use client"
-import { useDispatch, useSelector } from "react-redux";
-import DepartmentCard from "./departmentCard";
-import { useEffect } from "react";
-import { departmentList } from "@/redux/slice/departmentSlice";
+"use client";
 
-export default function DepartmentGrid() {
-  const dispatch = useDispatch();
-  const {
-    data:list,
-    loading,
-    error
-  } = useSelector((state)=> state.department)
-  useEffect(()=>{
-    dispatch(departmentList())
-  },[])
+import DepartmentCard from "./departmentCard";
+
+export default function DepartmentGrid({
+  departments = [],
+  doctorCountByDept,
+}: any) {
+  if (!departments.length) {
+    return (
+      <div className="text-center text-slate-500 py-10">
+        No Departments Found
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
-      {list.map((dept) => (
-        <DepartmentCard key={dept._id} department={dept} />
+      {departments.map((dept: any) => (
+        <DepartmentCard
+          key={dept._id}
+          department={dept}
+          totalDoctors={doctorCountByDept[dept._id] || 0}
+        />
       ))}
     </div>
   );

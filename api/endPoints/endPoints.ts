@@ -1,5 +1,3 @@
-import { departmentList } from "@/redux/slice/departmentSlice";
-
 export const endPoints = {
   auth: {
     signin: "/admin/auth/login",
@@ -10,15 +8,21 @@ export const endPoints = {
     list: "/admin/doctor/list",
     create: "/admin/doctor/create",
     update: "/admin/doctor/update",
-    details: "/admin/doctor/details/:id",
+    details: "/admin/doctor/details",
     department: "/admin/doctor/department",
     departmentList: "/admin/departments/list",
     departmentWiseDoctor: "/admin/departments",
     delete: "/admin/doctor/delete",
-    appointment: {
-      list: "/admin/doctor/appointment",
-      confirm: "/admin/doctor/appointment/:id",
-      cancel: "/admin/doctor/appointment/cancelled/:id",
-    },
+    doctorSearch: "/admin/department/doctors",
+    departmentDelete: "/admin/department/delete"
   },
+    appointment: {
+      list: "/admin/doctor/appointment/list",
+      confirm: "/admin/doctor/appointment",
+      cancel: "/admin/doctor/appointment/cancelld",
+      acceptedList: "/admin/appointment/acceptedlist"
+    },
+    branch: {
+      create: "/admin/diagnostic/create"
+    }
 };

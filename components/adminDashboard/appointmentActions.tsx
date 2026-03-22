@@ -1,40 +1,8 @@
-// export default function AppointmentActions() {
-//   return (
-//     <div className="flex justify-center gap-3">
-//       <button className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition">
-//         Accept
-//       </button>
-
-//       <button className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
-//         Cancel
-//       </button>
-//     </div>
-//   );
-// }
-
-
-
-// export default function AppointmentActions() {
-//   return (
-//     <div className="flex justify-center gap-3">
-//       <button className="h-10 w-10 flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all duration-300 shadow-sm border border-emerald-100 group">
-//         <span className="group-hover:scale-125 transition-transform">✓</span>
-//       </button>
-//       <button className="h-10 w-10 flex items-center justify-center bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all duration-300 shadow-sm border border-rose-100 group">
-//         <span className="group-hover:scale-125 transition-transform">✕</span>
-//       </button>
-//     </div>
-//   );
-// }
-
-
-
 "use client";
 
 export default function AppointmentActions() {
   return (
     <div className="flex justify-center gap-3">
-      
       {/* Accept */}
       <button
         title="Accept Appointment"

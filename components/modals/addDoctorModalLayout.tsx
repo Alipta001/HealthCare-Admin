@@ -1,7 +1,6 @@
 "use client";
 
 import DoctorModalForm from "./doctorModalForm";
-import ModalPortal from "@/components/common/ModalPortal";
 
 type AddDoctorModalLayoutProps = {
   open: boolean;
